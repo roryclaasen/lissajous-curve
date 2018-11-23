@@ -2,6 +2,7 @@
 
 import P5 from 'p5';
 import Stats from 'stats-js';
+import { GUI } from 'dat.gui';
 
 import Curve from './curve';
 
@@ -10,8 +11,10 @@ const height = window.innerHeight;
 
 const options = {
 	width: 120,
-	color: '#fffff',
-	background: '#000000'
+	color: '#fff',
+	background: '#000',
+	lines: true,
+	point: true
 };
 
 const noX = () => Math.floor(width / options.width) - 1;
@@ -19,6 +22,13 @@ const noY = () => Math.floor(height / options.width) - 1;
 
 const stats = new Stats();
 stats.setMode(1);
+
+const gui = new GUI();
+// gui.add(options, 'width', 1, 300);
+gui.addColor(options, 'color');
+gui.addColor(options, 'background');
+gui.add(options, 'lines');
+gui.add(options, 'point');
 
 /**
  * Wrapper function for sketch
@@ -56,12 +66,18 @@ function renderer(sketch) {
 			sketch.ellipse(cx, cy, d, d);
 			const x = r * Math.cos(angle * (i + 1) - sketch.HALF_PI);
 			const y = r * Math.sin(angle * (i + 1) - sketch.HALF_PI);
-			sketch.strokeWeight(8);
-			sketch.stroke(options.color);
-			sketch.point(cx + x, cy + y);
-			sketch.stroke(255, 150);
-			sketch.strokeWeight(1);
-			sketch.line(cx + x, 0, cx + x, height);
+
+			if (options.point) {
+				sketch.strokeWeight(8);
+				sketch.stroke(options.color);
+				sketch.point(cx + x, cy + y);
+			}
+
+			if (options.lines) {
+				sketch.stroke(255, 150);
+				sketch.strokeWeight(1);
+				sketch.line(cx + x, 0, cx + x, height);
+			}
 
 			for (let j = 0; j < noY(); j += 1) {
 				curves[i][j].x = cx + x;
@@ -78,12 +94,18 @@ function renderer(sketch) {
 			sketch.ellipse(cx, cy, d, d);
 			const x = r * Math.cos(angle * (j + 1) - sketch.HALF_PI);
 			const y = r * Math.sin(angle * (j + 1) - sketch.HALF_PI);
-			sketch.strokeWeight(8);
-			sketch.stroke(options.color);
-			sketch.point(cx + x, cy + y);
-			sketch.stroke(255, 150);
-			sketch.strokeWeight(1);
-			sketch.line(0, cy + y, width, cy + y);
+
+			if (options.point) {
+				sketch.strokeWeight(8);
+				sketch.stroke(options.color);
+				sketch.point(cx + x, cy + y);
+			}
+
+			if (options.lines) {
+				sketch.stroke(255, 150);
+				sketch.strokeWeight(1);
+				sketch.line(0, cy + y, width, cy + y);
+			}
 
 			for (let i = 0; i < noX(); i += 1) {
 				curves[i][j].y = cy + y;

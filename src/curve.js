@@ -36,9 +36,11 @@ export default class Curve {
 			sketch.vertex(v.x, v.y);
 		}
 		sketch.endShape();
-
-		sketch.strokeWeight(8);
-		sketch.point(this.current.x, this.current.y);
+		
+		if (options.point) {
+			sketch.strokeWeight(8);
+			sketch.point(this.current.x, this.current.y);
+		}
 		this.current = new P5.Vector();
 	}
 }
