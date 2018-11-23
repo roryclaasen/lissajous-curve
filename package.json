@@ -30,6 +30,7 @@
 		"normalize.css": "^8.0.1",
 		"p5": "^0.7.2",
 		"sass-loader": "^7.1.0",
+		"stats-js": "^1.0.0-alpha1",
 		"style-loader": "^0.23.1",
 		"uglifyjs-webpack-plugin": "^2.0.1",
 		"webpack": "^4.26.0",

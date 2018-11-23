@@ -15,7 +15,7 @@ module.exports = (MODE = 'production') => {
 		plugins: [
 			new CleanWebpackPlugin(['dist']),
 			new HtmlWebpackPlugin({
-				title: 'Fractal Generator',
+				title: 'Lissajous Curve',
 				inject: false,
 				template: require('html-webpack-template'),
 				devServer: MODE == 'development' ? 'http://localhost:4000' : undefined,
