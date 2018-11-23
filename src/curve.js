@@ -36,7 +36,7 @@ export default class Curve {
 			sketch.vertex(v.x, v.y);
 		}
 		sketch.endShape();
-		
+
 		if (options.point) {
 			sketch.strokeWeight(8);
 			sketch.point(this.current.x, this.current.y);
