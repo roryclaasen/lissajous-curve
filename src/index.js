@@ -11,6 +11,7 @@ const height = window.innerHeight;
 
 const options = {
 	width: 120,
+	speed: 0.1,
 	color: '#fff',
 	background: '#000',
 	lines: true,
@@ -20,11 +21,26 @@ const options = {
 const noX = () => Math.floor(width / options.width) - 1;
 const noY = () => Math.floor(height / options.width) - 1;
 
+let angle = 0;
+const curves = [];
+function makeCurves() {
+	for (let x = 0; x < noX(); x += 1) {
+		curves[x] = [];
+		for (let y = 0; y < noY(); y += 1) {
+			curves[x][y] = new Curve();
+		}
+	}
+	angle = 0;
+}
+
 const stats = new Stats();
 stats.setMode(1);
 
 const gui = new GUI();
-// gui.add(options, 'width', 1, 300);
+gui.add(options, 'width', 10, 300).onChange((value) => {
+	makeCurves();
+});
+gui.add(options, 'speed', 0.01, 1, 0.01);
 gui.addColor(options, 'color');
 gui.addColor(options, 'background');
 gui.add(options, 'lines');
@@ -36,14 +52,7 @@ gui.add(options, 'point');
  * @param {P5} sketch
  */
 function renderer(sketch) {
-	const curves = [];
-	for (let x = 0; x < noX(); x += 1) {
-		curves[x] = [];
-		for (let y = 0; y < noY(); y += 1) {
-			curves[x][y] = new Curve();
-		}
-	}
-	let angle = 0;
+	makeCurves();
 
 	sketch.setup = () => {
 		sketch.createCanvas(width, height);
@@ -61,20 +70,22 @@ function renderer(sketch) {
 		for (let i = 0; i < noX(); i += 1) {
 			const cx = options.width + i * options.width + options.width / 2;
 			const cy = options.width / 2;
+
 			sketch.strokeWeight(1);
 			sketch.stroke(options.color);
 			sketch.ellipse(cx, cy, d, d);
+
 			const x = r * Math.cos(angle * (i + 1) - sketch.HALF_PI);
 			const y = r * Math.sin(angle * (i + 1) - sketch.HALF_PI);
 
-			if (options.point) {
-				sketch.strokeWeight(8);
-				sketch.stroke(options.color);
-				sketch.point(cx + x, cy + y);
-			}
+			sketch.strokeWeight(8);
+			sketch.stroke(options.color);
+			sketch.point(cx + x, cy + y);
 
 			if (options.lines) {
-				sketch.stroke(255, 150);
+				const color = sketch.color(options.color);
+				color.setAlpha(150);
+				sketch.stroke(color);
 				sketch.strokeWeight(1);
 				sketch.line(cx + x, 0, cx + x, height);
 			}
@@ -89,20 +100,22 @@ function renderer(sketch) {
 		for (let j = 0; j < noY(); j += 1) {
 			const cx = options.width / 2;
 			const cy = options.width + j * options.width + options.width / 2;
+
 			sketch.strokeWeight(1);
 			sketch.stroke(options.color);
 			sketch.ellipse(cx, cy, d, d);
+
 			const x = r * Math.cos(angle * (j + 1) - sketch.HALF_PI);
 			const y = r * Math.sin(angle * (j + 1) - sketch.HALF_PI);
 
-			if (options.point) {
-				sketch.strokeWeight(8);
-				sketch.stroke(options.color);
-				sketch.point(cx + x, cy + y);
-			}
+			sketch.strokeWeight(8);
+			sketch.stroke(options.color);
+			sketch.point(cx + x, cy + y);
 
 			if (options.lines) {
-				sketch.stroke(255, 150);
+				const color = sketch.color(options.color);
+				color.setAlpha(150);
+				sketch.stroke(color);
 				sketch.strokeWeight(1);
 				sketch.line(0, cy + y, width, cy + y);
 			}
@@ -119,7 +132,7 @@ function renderer(sketch) {
 			}
 		}
 
-		angle -= 0.01;
+		angle -= options.speed / 10;
 		if (angle < -sketch.TWO_PI) {
 			angle = 0.0;
 			for (let x = 0; x < noX(); x += 1) {
