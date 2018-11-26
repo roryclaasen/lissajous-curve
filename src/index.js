@@ -15,7 +15,8 @@ document.getElementById('root').appendChild(stats.domElement);
 
 const options = {
 	size: 120,
-	speed: 1,
+	speed: 15,
+	continuous: true,
 	appearance: {
 		color: '#fff',
 		background: '#000',
@@ -43,6 +44,7 @@ function makeCurves() {
 const gui = new GUI();
 gui.add(options, 'size', 10, 300).onChange((value) => { makeCurves(); });
 gui.add(options, 'speed', 1, 100, 1);
+gui.add(options, 'continuous');
 
 const appearance = gui.addFolder('appearance');
 appearance.addColor(options.appearance, 'color');
@@ -119,6 +121,8 @@ function renderer(sketch) {
 		sketch.createCanvas(width, height);
 	};
 
+	let drawn = false;
+
 	sketch.draw = () => {
 		stats.begin();
 		sketch.background(options.appearance.background);
@@ -133,13 +137,18 @@ function renderer(sketch) {
 			}
 		}
 
-		angle -= options.speed / 1000;
+		if (options.continuous || !drawn) angle -= options.speed / 1000;
 		if (angle < -sketch.TWO_PI) {
 			angle = 0.0;
-			for (let x = 0; x < noX(); x += 1) {
-				for (let y = 0; y < noY(); y += 1) {
-					curves[x][y].reset();
+			drawn = true;
+
+			if (options.continuous) {
+				for (let x = 0; x < noX(); x += 1) {
+					for (let y = 0; y < noY(); y += 1) {
+						curves[x][y].reset();
+					}
 				}
+				drawn = false;
 			}
 		}
 		stats.end();

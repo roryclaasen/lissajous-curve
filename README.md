@@ -14,6 +14,7 @@ My attempt at a Lissajous Curve Table
 
 - [Size](#size)
 - [Speed](#speed)
+- [Continuous](#continuous)
 - Appearance
   - [Appearance.Color](#appearancecolor)
   - [Appearance.Background](#appearancebackground)
@@ -36,6 +37,14 @@ The Size of each ring
 | Number | `15`    | `1` | `100` |
 
 The speed of the circles
+
+### Continuous
+
+| Type    | Default |
+|:-------:|:-------:|
+| Boolean | `true`  |
+
+Continuous rendering of the Lissajous table
 
 ### Appearance.Color
 
