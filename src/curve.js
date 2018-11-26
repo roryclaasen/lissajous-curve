@@ -28,7 +28,8 @@ export default class Curve {
 	 * @memberof Curve
 	 */
 	draw(sketch, options) {
-		sketch.stroke(options.color);
+		const color = sketch.color(options.appearance.color);
+		sketch.stroke(color);
 		sketch.strokeWeight(1);
 		sketch.noFill();
 		sketch.beginShape();
@@ -37,8 +38,10 @@ export default class Curve {
 		}
 		sketch.endShape();
 
-		if (options.point) {
-			sketch.strokeWeight(8);
+		if (options.appearance.point) {
+			color.setAlpha(200);
+			sketch.stroke(color);
+			sketch.strokeWeight(options.appearance.pointWeight);
 			sketch.point(this.current.x, this.current.y);
 		}
 		this.current = new P5.Vector();
