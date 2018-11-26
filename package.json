@@ -1,7 +1,7 @@
 {
 	"name": "lissajous-curve",
 	"private": true,
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "My attempt at a lissajous curve table",
 	"scripts": {
 		"start": "webpack-dev-server --open --config webpack.dev.js",
